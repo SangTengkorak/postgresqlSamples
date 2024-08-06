@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  generic_db:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tengkorak123
+      POSTGRES_DB: generic_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+    ports:
+      - 5432:5432
+    networks:
+      - nggratilnet
+
+volumes:
+  pgdata: {}
+
+networks:
+  nggratilnet:
+    driver: bridge

@@ -1,0 +1,87 @@
+Day-to-Day Queries
+- Retrieve all students:
+SELECT * FROM student;
+
+- Retrieve all courses:
+SELECT * FROM course;
+
+- Get the grades for a specific students (replace 1 with the specific student_id):
+SELECT g.grade, c.course_name, s.semester, s.year
+FROM grade g
+JOIN section s ON g.section_id = s.section_id
+JOIN course c ON s.course_id = c.course_id
+WHERE g.student_id = 1;  
+
+- Get all sections of a specific courses (replace 1 with the specific course_id):
+SELECT * FROM section WHERE course_id = 1;
+
+- Retrieve all tutors:
+SELECT * FROM tutor;
+
+Calculation Queries
+- Calculate the average grade for a specific student (replace 30 with the specific student_id):
+SELECT AVG(CASE g.grade
+             WHEN 'A' THEN 4.0
+             WHEN 'B' THEN 3.0
+             WHEN 'C' THEN 2.0
+             WHEN 'D' THEN 1.0
+             WHEN 'F' THEN 0.0
+           END) AS gpa
+FROM grade g
+WHERE g.student_id = 30;
+
+- Calculate the number of students in each major:
+SELECT major, COUNT(*) AS num_students
+FROM student
+GROUP BY major;
+
+- Calculate the total number of sections offered each semester:
+SELECT semester, year, COUNT(*) AS num_sections
+FROM section
+GROUP BY semester, year;
+
+Complex Queries
+- Get the names of students and the courses they are enrolled in, along with their grades:
+SELECT s.first_name, s.last_name, c.course_name, g.grade
+FROM student s
+JOIN grade g ON s.student_id = g.student_id
+JOIN section se ON g.section_id = se.section_id
+JOIN course c ON se.course_id = c.course_id;
+
+- Retrieve the list of students who have received a grade 'A' in any course:
+SELECT DISTINCT s.first_name, s.last_name
+FROM student s
+JOIN grade g ON s.student_id = g.student_id
+WHERE g.grade = 'A';
+
+- Get the number of students enrolled in each course:
+SELECT c.course_name, COUNT(g.student_id) AS num_students
+FROM course c
+JOIN section se ON c.course_id = se.course_id
+JOIN grade g ON se.section_id = g.section_id
+GROUP BY c.course_name;
+
+- get the lis of courses taught by each tutor along with the number of sections: 
+-- Assuming each course has a tutor_id column in the course table
+ALTER TABLE course ADD COLUMN tutor_id INT REFERENCES tutor(tutor_id);
+
+SELECT t.first_name, t.last_name, c.course_name, COUNT(se.section_id) AS num_sections
+FROM tutor t
+JOIN course c ON t.tutor_id = c.tutor_id  -- Linking tutor to course
+JOIN section se ON c.course_id = se.course_id
+GROUP BY t.first_name, t.last_name, c.course_name;
+
+
+- Get the list of students and their average grade for each semester:
+SELECT s.first_name, s.last_name, se.semester, se.year, AVG(CASE g.grade
+                                                             WHEN 'A' THEN 4.0
+                                                             WHEN 'B' THEN 3.0
+                                                             WHEN 'C' THEN 2.0
+                                                             WHEN 'D' THEN 1.0
+                                                             WHEN 'F' THEN 0.0
+                                                           END) AS gpa
+FROM student s
+JOIN grade g ON s.student_id = g.student_id
+JOIN section se ON g.section_id = se.section_id
+GROUP BY s.first_name, s.last_name, se.semester, se.year;
+

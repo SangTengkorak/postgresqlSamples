@@ -1,0 +1,47 @@
+-- Create the database
+CREATE DATABASE universitydb;
+
+-- Connect to the database
+\c universitydb;
+
+-- Create the student table
+CREATE TABLE student (
+    student_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE,
+    gender CHAR(1),
+    major VARCHAR(50)
+);
+
+-- Create the course table
+CREATE TABLE course (
+    course_id SERIAL PRIMARY KEY,
+    course_name VARCHAR(100),
+    department VARCHAR(50)
+);
+
+-- Create the section table
+CREATE TABLE section (
+    section_id SERIAL PRIMARY KEY,
+    course_id INT REFERENCES course(course_id),
+    section_number INT,
+    semester VARCHAR(10),
+    year INT
+);
+
+-- Create the grade table
+CREATE TABLE grade (
+    grade_id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES student(student_id),
+    section_id INT REFERENCES section(section_id),
+    grade CHAR(1)
+);
+
+-- Create the tutor table
+CREATE TABLE tutor (
+    tutor_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department VARCHAR(50)
+);
