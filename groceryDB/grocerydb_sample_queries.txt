@@ -1,0 +1,62 @@
+- Get all orders from a specific store:
+SELECT * FROM orders WHERE store_id = 1;
+
+Calculation Queries
+- Total sales amount for each product:
+SELECT p.product_name, SUM(op.qty * p.price) AS total_sales
+FROM order_products op
+JOIN products p ON op.product_id = p.product_id
+GROUP BY p.product_name;
+
+- Total quantity sold for each product:
+SELECT p.product_name, SUM(op.qty) AS total_quantity
+FROM order_products op
+JOIN products p ON op.product_id = p.product_id
+GROUP BY p.product_name;
+
+Complex Queries
+- Get the store with the highest total sales:
+SELECT s.store_name, SUM(op.qty * p.price) AS total_sales
+FROM orders o
+JOIN order_products op ON o.order_id = op.order_id
+JOIN products p ON op.product_id = p.product_id
+JOIN stores s ON o.store_id = s.store_id
+GROUP BY s.store_name
+ORDER BY total_sales DESC
+LIMIT 1;
+
+- Get the most frequently ordered product:
+SELECT p.product_name, COUNT(op.product_id) AS order_count
+FROM order_products op
+JOIN products p ON op.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY order_count DESC
+LIMIT 1;
+
+- Get the orders and products details for orders placed in a specific month:
+SELECT o.order_id, o.order_date, s.store_name, p.product_name, op.qty, (op.qty * p.price) AS total_price
+FROM orders o
+JOIN order_products op ON o.order_id = op.order_id
+JOIN products p ON op.product_id = p.product_id
+JOIN stores s ON o.store_id = s.store_id
+WHERE EXTRACT(MONTH FROM o.order_date) = 3;  -- March, you could also change it to other month
+
+Join Queries
+- Join products and order_products to list all ordered products with their quantities:
+SELECT p.product_name, op.qty
+FROM order_products op
+JOIN products p ON op.product_id = p.product_id;
+
+- Join orders, order_products, and products to get the detailed order information:
+SELECT o.order_id, o.order_date, p.product_name, op.qty, (op.qty * p.price) AS total_price
+FROM orders o
+JOIN order_products op ON o.order_id = op.order_id
+JOIN products p ON op.product_id = p.product_id;
+
+- Join stores, orders, and order_products to get the store name, order date, and ordered products:
+SELECT s.store_name, o.order_date, p.product_name, op.qty
+FROM stores s
+JOIN orders o ON s.store_id = o.store_id
+JOIN order_products op ON o.order_id = op.order_id
+JOIN products p ON op.product_id = p.product_id;
+

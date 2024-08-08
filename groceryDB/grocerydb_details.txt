@@ -1,0 +1,36 @@
+-- Create database
+CREATE DATABASE grocerydb;
+
+-- Connect to the database
+\c grocerydb;
+
+-- Create table products
+CREATE TABLE products (
+  product_id SERIAL PRIMARY KEY,
+  product_name VARCHAR(50),
+  price MONEY
+);
+
+-- Create table stores
+CREATE TABLE stores (
+  store_id SERIAL PRIMARY KEY,
+  store_name VARCHAR(50)
+);
+
+-- Create table orders
+CREATE TABLE orders (
+  orderId SERIAL PRIMARY KEY,
+  store_id INT,
+  order_date DATE,
+  CONSTRAINT FK_orders_store FOREIGN KEY (store_id) REFERENCES stores(store_id)
+);
+
+-- Create table OrderProducts
+CREATE TABLE order_products (
+  order_id INT,
+  product_id INT,
+  qty INT,
+  CONSTRAINT PK_order_id_product_id PRIMARY KEY (order_id, product_id),
+  CONSTRAINT FK_order_products_products FOREIGN KEY (product_id) REFERENCES products(product_id),
+  CONSTRAINT FK_order_products_orders FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
