@@ -1,0 +1,93 @@
+Certainly! Here are examples of how to add, remove, and alter columns in PostgreSQL:
+
+### Adding Columns
+
+1. **Add a single column to a table:**
+   ```sql
+   ALTER TABLE products
+   ADD COLUMN description TEXT;
+   ```
+
+2. **Add multiple columns to a table:**
+   ```sql
+   ALTER TABLE stores
+   ADD COLUMN address VARCHAR(255),
+   ADD COLUMN phone_number VARCHAR(15);
+   ```
+
+### Removing Columns
+
+1. **Remove a single column from a table:**
+   ```sql
+   ALTER TABLE products
+   DROP COLUMN description;
+   ```
+
+2. **Remove multiple columns from a table:**
+   ```sql
+   ALTER TABLE stores
+   DROP COLUMN address,
+   DROP COLUMN phone_number;
+   ```
+
+### Altering Columns
+
+1. **Change the data type of a column:**
+   ```sql
+   ALTER TABLE products
+   ALTER COLUMN price TYPE NUMERIC(10, 2);
+   ```
+
+2. **Rename a column:**
+   ```sql
+   ALTER TABLE stores
+   RENAME COLUMN store_name TO name;
+   ```
+
+3. **Set a default value for a column:**
+   ```sql
+   ALTER TABLE products
+   ALTER COLUMN price SET DEFAULT 0.00;
+   ```
+
+4. **Drop the default value of a column:**
+   ```sql
+   ALTER TABLE products
+   ALTER COLUMN price DROP DEFAULT;
+   ```
+
+5. **Change the column to not allow NULL values:**
+   ```sql
+   ALTER TABLE products
+   ALTER COLUMN price SET NOT NULL;
+   ```
+
+6. **Change the column to allow NULL values:**
+   ```sql
+   ALTER TABLE products
+   ALTER COLUMN price DROP NOT NULL;
+   ```
+
+### Example Scenario
+
+Let's say you want to modify the `orders` table to include a `customer_id`, remove the `order_date` column, and change the `store_id` column to allow NULL values.
+
+1. **Add a `customer_id` column:**
+   ```sql
+   ALTER TABLE orders
+   ADD COLUMN customer_id INT;
+   ```
+
+2. **Remove the `order_date` column:**
+   ```sql
+   ALTER TABLE orders
+   DROP COLUMN order_date;
+   ```
+
+3. **Change `store_id` to allow NULL values:**
+   ```sql
+   ALTER TABLE orders
+   ALTER COLUMN store_id DROP NOT NULL;
+   ```
+
+These operations will help you manage schema changes in your PostgreSQL database effectively.

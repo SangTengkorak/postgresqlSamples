@@ -1,0 +1,39 @@
+- Menghitung umur dan mengurutkan berdasarkan umur dari yang paling tua:
+SELECT nama, tanggal_lahir, 
+       DATE_PART('year', AGE(CURRENT_DATE, tanggal_lahir)) AS umur
+FROM warga
+ORDER BY umur DESC;
+
+- Menampilkan nama warga, alamat, dan pekerjaan mereka
+SELECT w.nama, w.alamat, p.nama_pekerjaan
+FROM warga w
+JOIN pekerjaan p ON w.id = p.warga_id;
+
+- Menampilkan NIK, nama warga, jenjang pendidikan, dan pekerjaan mereka
+select w.nik, w.nama, pen.jenjang_pendidikan, pen.institusi, pek.nama_pekerjaan
+from warga w
+join pendidikan pen on w.id = pen.warga_id
+join pekerjaan pek on w.id = pek.warga_id;
+
+- Menampilkan nama warga, alamat, dan informasi tentang kepala keluarga mereka
+SELECT w.nama AS anggota_nama, w.alamat, kk.kepala_keluarga_id, kepala.nama AS kepala_nama
+FROM warga w
+JOIN kk ON w.id = kk.kepala_keluarga_id
+JOIN warga kepala ON kk.kepala_keluarga_id = kepala.id;
+
+- Menampilkan semua warga dan pekerjaan mereka, termasuk warga yang belum memiliki pekerjaan.
+SELECT w.nama, COALESCE(p.nama_pekerjaan, 'Tidak Bekerja') AS pekerjaan
+FROM warga w
+LEFT JOIN pekerjaan p ON w.id = p.warga_id;
+
+- Warga dengan pendidikan S1
+SELECT w.nama, p.jenjang_pendidikan
+FROM warga w
+JOIN pendidikan p ON w.id = p.warga_id
+WHERE p.jenjang_pendidikan = 'S1';
+
+- Jumlah warga dengan pendidikan S1
+SELECT COUNT(w.nama)                      
+FROM warga w
+JOIN pendidikan p ON w.id = p.warga_id
+WHERE p.jenjang_pendidikan = 'S1';

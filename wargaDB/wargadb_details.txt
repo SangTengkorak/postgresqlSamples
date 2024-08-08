@@ -1,0 +1,94 @@
+CREATE DATABASE wargadb;
+
+\c wargadb;
+
+# Tabel ini menyimpan data pribadi setiap warga.
+CREATE TABLE warga (
+    id SERIAL PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    nik VARCHAR(16) UNIQUE NOT NULL,
+    tempat_lahir VARCHAR(50),
+    tanggal_lahir DATE,
+    jenis_kelamin CHAR(1) CHECK (jenis_kelamin IN ('L', 'P')),
+    alamat VARCHAR(255),
+    rt VARCHAR(3),
+    rw VARCHAR(3),
+    pekerjaan VARCHAR(50),
+    status_perkawinan VARCHAR(20)
+);
+
+# Tabel ini menyimpan data kartu keluarga, dengan relasi ke tabel warga.
+CREATE TABLE kk (
+    id SERIAL PRIMARY KEY,
+    no_kk VARCHAR(16) UNIQUE NOT NULL,
+    kepala_keluarga_id INT REFERENCES warga(id),
+    alamat VARCHAR(255),
+    rt VARCHAR(3),
+    rw VARCHAR(3)
+);
+
+# Tabel ini menghubungkan anggota keluarga dengan kartu keluarga.
+CREATE TABLE anggota_kk (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    kk_id INT REFERENCES kk(id),
+    hubungan_keluarga VARCHAR(50)
+);
+
+# Tabel ini menyimpan riwayat pendidikan setiap warga.
+CREATE TABLE pendidikan (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    jenjang_pendidikan VARCHAR(50),
+    institusi VARCHAR(100),
+    tahun_lulus INT
+);
+
+# Tabel ini menyimpan riwayat pekerjaan warga.
+CREATE TABLE pekerjaan (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    nama_pekerjaan VARCHAR(100),
+    perusahaan VARCHAR(100),
+    tahun_mulai INT,
+    tahun_selesai INT
+);
+
+# Tabel ini menyimpan data warga yang pindah masuk ke wilayah RT/RW.
+CREATE TABLE pindah_masuk (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    tanggal_pindah DATE NOT NULL,
+    asal_alamat VARCHAR(255) NOT NULL,
+    keterangan TEXT
+);
+
+# Tabel ini menyimpan data warga yang pindah keluar dari wilayah RT/RW.
+CREATE TABLE pindah_keluar (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    tanggal_pindah DATE NOT NULL,
+    tujuan_alamat VARCHAR(255) NOT NULL,
+    keterangan TEXT
+);
+
+# Tabel ini menyimpan data warga yang telah meninggal.
+CREATE TABLE kematian (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    tanggal_kematian DATE NOT NULL,
+    tempat_kematian VARCHAR(100),
+    sebab_kematian TEXT
+);
+
+# Tabel ini menyimpan data kelahiran di wilayah RT/RW.
+CREATE TABLE kelahiran (
+    id SERIAL PRIMARY KEY,
+    warga_id INT REFERENCES warga(id),
+    tanggal_lahir DATE NOT NULL,
+    tempat_lahir VARCHAR(100),
+    nama_ibu VARCHAR(100),
+    nama_ayah VARCHAR(100)
+);
+
+
