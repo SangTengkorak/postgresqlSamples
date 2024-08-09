@@ -1,0 +1,29 @@
+- List all customers and their orders:
+SELECT c.first_name, c.last_name, o.order_id, o.order_date
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id;
+
+- Total quantity ordered for each product:
+SELECT i.product_name, SUM(i.quantity) AS total_quantity
+FROM order_items i
+GROUP BY i.product_name;
+
+- Find customers who have placed more than three orders:
+SELECT c.first_name, c.last_name, COUNT(o.order_id) AS num_orders
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id
+HAVING COUNT(o.order_id) > 3;
+
+- Get the most expensive item ordered
+SELECT i.product_name, MAX(i.quantity) AS max_quantity
+FROM order_items i
+GROUP BY i.product_name
+ORDER BY max_quantity DESC
+LIMIT 1;
+
+- Calculate the total revenue for each order
+SELECT o.order_id, SUM(i.quantity) AS total_revenue
+FROM orders o
+JOIN order_items i ON o.order_id = i.order_id
+GROUP BY o.order_id;

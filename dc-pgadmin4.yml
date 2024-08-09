@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  pgadmin4:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: mastengkorak@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: tengkorak123juga
+    volumes:
+      - pgadmin-data:/var/lib/postgresql/data 
+    ports:
+      - 8070:80
+    networks:
+      - nggratilnet
+
+volumes:
+  pgadmin-data: {}
+
+networks:
+  nggratilnet:
+    driver: bridge

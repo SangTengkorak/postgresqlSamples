@@ -1,0 +1,30 @@
+- List all employees and their departmens:
+SELECT e.first_name, e.last_name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+- Find all projects and the employees assigned to them:
+SELECT p.project_name, e.first_name, e.last_name
+FROM projects p
+JOIN employees e ON p.employee_id = e.employee_id;
+
+- Count the number of employees in each department:
+SELECT d.department_name, COUNT(e.employee_id) AS num_employees
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+GROUP BY d.department_name;
+
+- List employees with more than one project:
+SELECT e.first_name, e.last_name, COUNT(p.project_id) AS num_projects
+FROM employees e
+JOIN projects p ON e.employee_id = p.employee_id
+GROUP BY e.employee_id
+HAVING COUNT(p.project_id) > 1;
+
+- Get department with the most employees:
+SELECT d.department_name, COUNT(e.employee_id) AS number_of_employees
+FROM departments d
+JOIN employees e ON d.department_id = e.department_id
+GROUP BY d.department_name
+ORDER BY COUNT(e.employee_id) DESC
+LIMIT 1;

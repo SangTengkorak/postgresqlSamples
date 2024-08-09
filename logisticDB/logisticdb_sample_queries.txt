@@ -1,0 +1,63 @@
+- Retrieve All Orders with Customer Details:
+SELECT o.OrderID, c.FirstName, c.LastName, o.OrderDate, o.Status
+FROM Orders o
+JOIN Customers c ON o.CustomerID = c.CustomerID;
+
+-  List All Products Ordered by a Specific Customer (e.g., John Doe):
+SELECT c.FirstName, c.LastName, p.ProductName AS Ordered_Product, od.Quantity, od.TotalPrice
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+WHERE c.FirstName = 'John' AND c.LastName = 'Doe';
+
+- Find total spending of each customer:
+SELECT c.FirstName, c.LastName, SUM(od.TotalPrice) AS Total_Spending
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+GROUP BY c.CustomerID;
+
+- List orders with total price for each order:
+SELECT o.OrderID, SUM(od.TotalPrice) AS Order_Total
+FROM Orders o
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+GROUP BY o.OrderID;
+
+- Find the most expensive product ordered:
+SELECT p.ProductName, MAX(od.TotalPrice) AS Max_Price
+FROM Products p
+JOIN OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY p.ProductName;
+
+- Show products ordered more than once:
+SELECT p.ProductName, SUM(od.Quantity) AS Total_Quantity_Ordered
+FROM Products p
+JOIN OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY p.ProductName
+HAVING SUM(od.Quantity) > 1;
+
+- List customers with orders in a specific month (e.g. July 2023):
+SELECT DISTINCT c.FirstName, c.LastName, o.OrderDate
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderDate BETWEEN '2023-07-01' AND '2023-07-31';
+
+- Retrieve the details of orders with more than one product:
+SELECT o.OrderID, COUNT(od.OrderDetailID) AS Number_of_Products
+FROM Orders o
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+GROUP BY o.OrderID
+HAVING COUNT(od.OrderDetailID) > 1;
+
+- Calculate the average price of products ordered:
+SELECT AVG(od.TotalPrice) AS Average_Order_Price
+FROM OrderDetails od;
+
+- Find the most popular product (i.e., Product Ordered The most)
+SELECT p.ProductName, SUM(od.Quantity) AS Total_Quantity_Ordered
+FROM Products p
+JOIN OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY p.ProductName
+ORDER BY Total_Quantity_Ordered DESC
+LIMIT 1;
