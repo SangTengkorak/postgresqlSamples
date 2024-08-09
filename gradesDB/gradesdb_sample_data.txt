@@ -1,0 +1,48 @@
+-- Insert data into students table
+INSERT INTO students (first_name, last_name) VALUES
+('John', 'Doe'),
+('Jane', 'Smith'),
+('Alice', 'Johnson'),
+('Bob', 'Brown'),
+('Carol', 'Davis'),
+('David', 'Wilson'),
+('Emma', 'Moore'),
+('Frank', 'Taylor'),
+('Grace', 'Anderson'),
+('Henry', 'Thomas');
+
+-- Insert data into courses table
+INSERT INTO courses (course_name) VALUES
+('Math 101'),
+('English 202'),
+('History 303'),
+('Biology 404'),
+('Chemistry 505'),
+('Physics 606'),
+('Computer Science 707'),
+('Art 808'),
+('Economics 909'),
+('Philosophy 1010');
+
+-- Insert data into grades table
+INSERT INTO grades (student_id, course_id, grade) VALUES
+(1, 1, 85.00),
+(1, 2, 90.00),
+(2, 1, 78.00),
+(2, 3, 82.00),
+(3, 4, 88.00),
+(3, 5, 91.00),
+(4, 6, 76.00),
+(4, 7, 84.00),
+(5, 8, 89.00),
+(5, 9, 92.00),
+(6, 1, 80.00),
+(6, 2, 87.00),
+(7, 3, 79.00),
+(7, 4, 85.00),
+(8, 5, 90.00),
+(8, 6, 83.00),
+(9, 7, 88.00),
+(9, 8, 77.00),
+(10, 9, 91.00),
+(10, 10, 93.00);
